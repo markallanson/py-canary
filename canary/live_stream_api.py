@@ -21,7 +21,7 @@ URL_LIVE_STREAM = "https://my.canary.is/api/watchlive/{device_id}/" \
 
 ATTR_USERNAME = "username"
 ATTR_PASSWORD = "password"
-ATTR_ACCESS_TOKEN = "access_token"
+ATTR_ACCESS_TOKEN = "token"
 ATTR_SESSION_ID = "sessionId"
 
 
@@ -42,7 +42,7 @@ class LiveStreamApi:
         xsrf_token = response.cookies[COOKIE_XSRF_TOKEN]
         ssesyranac = response.cookies[COOKIE_SSESYRANAC]
 
-        response = requests.post(URL_LOGIN_API, {
+        response = requests.post(URL_LOGIN_API, json={
             ATTR_USERNAME: self._username,
             ATTR_PASSWORD: self._password
         }, headers={
@@ -51,6 +51,8 @@ class LiveStreamApi:
             COOKIE_XSRF_TOKEN: xsrf_token,
             COOKIE_SSESYRANAC: ssesyranac
         })
+
+        print(response.json())
 
         self._ssesyranac = ssesyranac
         self._token = response.json()[ATTR_ACCESS_TOKEN]
